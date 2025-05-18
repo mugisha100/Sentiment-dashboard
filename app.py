@@ -39,21 +39,33 @@ filtered_df = df[(df['platform'].isin(platform_filter)) & (df['sentiment'].isin(
 # -------------------------
 # Main Dashboard
 # -------------------------
-st.title("🚌 Public Sentiment Tracker – Distance-Based Fare in Rwanda")
+st.title("\U0001F68C Public Sentiment Tracker – Distance-Based Fare in Rwanda")
 
-# Sentiment over time
-st.subheader("📈 Sentiment Over Time")
-sentiment_time = filtered_df.groupby(['date', 'sentiment']).size().reset_index(name='counts')
-fig_time = px.line(sentiment_time, x='date', y='counts', color='sentiment', markers=True)
-st.plotly_chart(fig_time, use_container_width=True)
+st.markdown("""
+Welcome to the Public Sentiment Tracker for Rwanda's new distance-based fare system. 
+This dashboard allows you to explore sentiment trends and public feedback across various platforms.
+""")
 
-# Sentiment by Region
-st.subheader("🗺️ Sentiment by Region")
-region_sentiment = filtered_df.groupby(['region', 'sentiment']).size().unstack().fillna(0)
-st.dataframe(region_sentiment)
+# Data preview toggle
+if st.checkbox("Show raw data"):
+    st.dataframe(filtered_df.head())
+
+# Layout with columns
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("\U0001F4C8 Sentiment Over Time")
+    sentiment_time = filtered_df.groupby(['date', 'sentiment']).size().reset_index(name='counts')
+    fig_time = px.line(sentiment_time, x='date', y='counts', color='sentiment', markers=True)
+    st.plotly_chart(fig_time, use_container_width=True)
+
+with col2:
+    st.subheader("\U0001F5FA\uFE0F Sentiment by Region")
+    region_sentiment = filtered_df.groupby(['region', 'sentiment']).size().unstack().fillna(0)
+    st.dataframe(region_sentiment)
 
 # Word Cloud of Common Terms
-st.subheader("☁️ Common Terms from Public Feedback")
+st.subheader("\u2601\ufe0f Common Terms from Public Feedback")
 text = " ".join(filtered_df['text'].tolist())
 wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
 
@@ -63,7 +75,7 @@ ax.axis("off")
 st.pyplot(fig_wc)
 
 # Recommendation Section
-st.subheader("📝 Insights & Recommendations")
+st.subheader("\U0001F4DD Insights & Recommendations")
 st.markdown("""
 - **Clarify Fare Rules**: High confusion around how fares are calculated.
 - **Improve Communication**: Negative sentiment spikes align with major announcements lacking follow-up.
