@@ -15,7 +15,7 @@ This is a Streamlit dashboard that analyzes public sentiment around the introduc
 - Regional breakdown of sentiment
 - Policy recommendations and misinformation alerts
 
-## 🛠 Built With
+##  Built With
 
 - Python
 - Streamlit
